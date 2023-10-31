@@ -19,7 +19,7 @@
 import { Role } from "@b2bsample/business-admin-app/data-access/data-access-common-models-util";
 import { Session } from "next-auth";
 import React from "react";
-import { FlexboxGrid, PanelGroup } from "rsuite";
+import { FlexboxGrid, PanelGroup, Table } from "rsuite";
 import RoleItem from "./roleItem/roleItem";
 import styles from "../../../../../../styles/idp.module.css";
 
@@ -32,11 +32,13 @@ interface RolesListProps {
  * 
  * @param prop - `session`, `roleList`
  *
- * @returns List of all the roles in an organization
+ * @returns List of all the roles in an organization.
  */
 export default function RolesList(props: RolesListProps) {
 
     const { session, rolesList } = props;
+    
+    const { Column, HeaderCell, Cell } = Table;
 
     return (
         <FlexboxGrid
@@ -44,14 +46,43 @@ export default function RolesList(props: RolesListProps) {
             justify="start"
             align="top" >
             <div className={ styles.idp__list }>
-                <PanelGroup accordion bordered>
-                    { rolesList.map((role) => (
+                <PanelGroup accordion>
+                    <Table
+                        height={ 900 }
+                        data={ rolesList }
+                    >
+                        <Column width={ 200 } align="center">
+                            <HeaderCell><h6>Display Name</h6></HeaderCell>
+                            <Cell dataKey="displayName" />
+                        </Column>
+
+
+                        {/* <Column width={ 100 } flexGrow={ 1 } align="center" fixed="right"> */}
+                        <Column width={ 100 } align="center" flexGrow={ 2 } >
+                            <HeaderCell><h6>Assign</h6></HeaderCell>
+
+                            <Cell>
+                                { rowData => (
+                                    <span>
+                                        <a
+                                            onClick={ () => null }
+                                            style={ { cursor: "pointer" } }>
+                                            Edit
+                                        </a>
+                                    </span>
+                                ) }
+                            </Cell>
+                        </Column>
+
+                    </Table>
+                    {/* { rolesList.map((role) => (
                         <RoleItem
                             key={ role.id }
                             session={ session }
+                            role={ role }
                             id={ role.id }
                             roleUri={ role.meta.location } />
-                    )) }
+                    )) } */}
                 </PanelGroup>
             </div>
         </FlexboxGrid >

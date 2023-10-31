@@ -35,6 +35,7 @@ interface RoleItemNavProps {
 interface RoleItemProps {
     session: Session,
     id: string,
+    role: Role;
     roleUri: string
 }
 
@@ -42,11 +43,11 @@ interface RoleItemProps {
  * 
  * @param prop - `session`, `id`, `roleUri`
  * 
- * @returns role item componet
+ * @returns role item componet.
  */
 export default function RoleItem(props: RoleItemProps) {
 
-    const { session, id, roleUri } = props;
+    const { session, id, roleUri, role } = props;
 
     const [ roleDetails, setRoleDetails ] = useState<Role>(null);
     const [ activeKeyNav, setActiveKeyNav ] = useState<string>("1");
@@ -68,42 +69,21 @@ export default function RoleItem(props: RoleItemProps) {
     const roleItemDetailsComponent = (activeKey): JSX.Element => {
         switch (activeKey) {
             case "1":
-
                 return <General session={ session } roleDetails={ roleDetails } fetchData={ fetchData } />;
             case "2":
-
                 return <Permission session={ session } roleDetails={ roleDetails } fetchData={ fetchData } />;
             case "3":
-
                 return <Users session={ session } roleDetails={ roleDetails } fetchData={ fetchData } />;
             case "4":
-
                 return <JsonDisplayComponent jsonObject={ roleDetails } />;
         }
     };
 
 
     return (
-
-        roleDetails
-            ? (<Panel
-                header={
-                    (<AccordianItemHeaderComponent
-                        title={ roleDetails.displayName }
-                        description={ `Organization role ${roleDetails.displayName} details` } />)
-                }
-                eventKey={ id }
-                id={ id }>
-                <div style={ { marginLeft: "25px", marginRight: "25px" } }>
-                    <RoleItemNav
-                        activeKeyNav={ activeKeyNav }
-                        activeKeyNavSelect={ activeKeyNavSelect } />
-                    <div>
-                        { roleItemDetailsComponent(activeKeyNav) }
-                    </div>
-                </div>
-            </Panel>)
-            : null
+        <div>
+            <div>{ role.displayName }</div>
+        </div>
     );
 }
 
@@ -111,7 +91,7 @@ export default function RoleItem(props: RoleItemProps) {
  * 
  * @param prop - `activeKeyNav`, `activeKeyNavSelect`
  * 
- * @returns navigation bar of role item section
+ * @returns navigation bar of role item section.
  */
 function RoleItemNav(props: RoleItemNavProps) {
 

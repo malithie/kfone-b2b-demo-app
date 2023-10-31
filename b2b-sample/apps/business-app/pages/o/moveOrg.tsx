@@ -27,7 +27,11 @@ export async function getServerSideProps(context) {
 
     const session: Session = await getSession(context);
 
+    console.log("session", session);
+
     if (session) {
+
+        console.log("session", session);
 
         if (session.expires || session.error) {
 
